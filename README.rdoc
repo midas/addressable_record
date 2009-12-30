@@ -1,6 +1,84 @@
 = addressable_record
 
-Description goes here.
+http://github.com/midas/addressable_record
+
+
+== DESCRIPTION
+
+Encapsulates the composed of pattern for addresses into any easy to use library.
+
+
+== FEATURES
+
+* Store an address in multiple database fields, but load it as a AddressableAr::Address object.
+* Parse virtually any formatting an address can be represented with.
+* Overrides #to_s with format strings to control output.
+* Pre-defined named format strings to control output.
+
+
+== REQUIREMENTS
+
+* ActiveRecord >= 2.3
+
+
+== INSTALL
+
+  gem sources -a http://gemcutter.org
+  sudo gem install addressable_ar
+
+
+== INSTALL FOR RAILS
+
+Add to environment file:
+
+  config.gem "addressable_ar", :version => '10.0', :source => 'http://gemcutter.org'
+
+Run:
+
+  sudo rake:gems:install
+
+
+== USAGE
+
+Generate a migration to add the necessary field to the database:
+
+  script/generate phone_number_migration {file_name} {table_name} {field_name}
+  script/generate phone_number_migration users_have_mobile_phone_numbers users home_phone
+
+Call the macro in an ActiveRecord descendant:
+
+  class User < ActiveRecord::Base
+    address :home_address
+  end
+
+Set the field equal to something:
+
+  @user.phone_number = '+01 234-576-8901 x 123'
+
+Use the field:
+
+  @user.to_s # (234) 576-8901
+
+Use formats to control the output:
+
+  @user.to_s( '%a.%m.%p' ) # 234.576.8901
+
+Use pre-defined named formats to control the output:
+
+  @user.to_s( :us ) # 01 (234) 567-8901 x 123
+
+Reference the raw database field:
+
+  @user.raw_home_phone # 012345768901x123
+
+Reference the sub parts of the field:
+
+  @user.home_phone.country_code # 01
+  @user.home_phone.area_code # 234
+  @user.home_phone.subscriber_number_prefix # 567
+  @user.home_phone.subscriber_number_postfix # 8901
+  @user.home_phone.extension # 123
+
 
 == Note on Patches/Pull Requests
  
@@ -12,6 +90,16 @@ Description goes here.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
+
 == Copyright
 
-Copyright (c) 2009 Jason Harrelson. See LICENSE for details.
+Copyright (c) 2009 C. Jason Harrelson (midas)
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
