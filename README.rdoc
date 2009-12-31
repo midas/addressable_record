@@ -20,7 +20,8 @@ Encapsulates the composed of pattern for addresses into any easy to use library.
 
 == REQUIREMENTS
 
-* ActiveRecord >= 2.3
+* geographer >= 1.1.1
+* active_record >= 2.3
 
 
 == INSTALL
