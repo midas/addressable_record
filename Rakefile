@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "addressable_record"
     gem.summary = %Q{Encapsulates the composed of pattern for addresses into any easy to use library.}
-    gem.description = %Q{Encapsulates the composed of pattern for addresses into any easy to use library.  Provides conveniencce methods for formatting, parsing, etc.}
+    gem.description = %Q{Encapsulates the composed of pattern for addresses into any easy to use library.  Provides convenience methods for formatting, parsing, etc.}
     gem.email = "jason@lookforwardenterprises.com"
     gem.homepage = "http://github.com/midas/addressable_record"
     gem.authors = ["C. Jason Harrelson (midas)"]
