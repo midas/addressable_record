@@ -21,7 +21,7 @@ module AddressableRecord
         attrs.each do |attr|
           composed_of attr, :class_name => 'AddressableRecord::Address', :converter => :convert, :allow_nil => true, 
             :mapping => [["#{attr}_raw_street", 'raw_street'], ["#{attr}_city", 'city'], ["#{attr}_state_or_province", 'state_or_province'], ["#{attr}_raw_zip_code", 'raw_zip_code'], ["#{attr}_country", 'country']],
-            :constructor => Proc.new { |raw_street, city, state_or_province, raw_zip_code, country| AddressableRecord::Address( :raw_street => raw_street, :city => city, :state_or_province => state_or_province, :raw_zip_code => raw_zip_code, :country => country ) }
+            :constructor => Proc.new { |raw_street, city, state_or_province, raw_zip_code, country| AddressableRecord::Address.new( :raw_street => raw_street, :city => city, :state_or_province => state_or_province, :raw_zip_code => raw_zip_code, :country => country ) }
         end
       end
     end

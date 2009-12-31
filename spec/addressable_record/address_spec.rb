@@ -100,30 +100,50 @@ describe "AddressableRecord::Address" do
       end
       
       it "should obey the :us format correctly" do
-        @address.to_s( :us ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 31234-7890' )
+        @address.to_s( :us ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 33333-1111' )
       end
 
       it "should obey the :us_long format correctly" do
-        @address.to_s( :us_long ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 31234-7890, United States' )
+        @address.to_s( :us_long ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 33333-1111, United States' )
       end
 
-      it "should obey the %s1 format correctly" do
+      it "should obey the %s format correctly" do
         @address.to_s( '%s' ).should eql( '123 Jones Street, Suite 540' )
       end
 
-      it "should obey the %s1 format correctly" do
+      it "should obey the %1 format correctly" do
+        @address.to_s( '%1' ).should eql( '123 Jones Street' )
+      end
+
+      it "should obey the %2 format correctly" do
+        @address.to_s( '%2' ).should eql( 'Suite 540' )
+      end
+
+      it "should obey the %3 format correctly" do
+        @address.to_s( '%3' ).should eql( '' )
+      end
+
+      it "should obey the %4 format correctly" do
+        @address.to_s( '%4' ).should eql( '' )
+      end
+
+      it "should obey the %5 format correctly" do
+        @address.to_s( '%5' ).should eql( '' )
+      end
+
+      it "should obey the %c format correctly" do
         @address.to_s( '%c' ).should eql( 'Atlanta' )
       end
 
-      it "should obey the %s1 format correctly" do
+      it "should obey the %S format correctly" do
         @address.to_s( '%S' ).should eql( 'GA' )
       end
 
-      it "should obey the %s1 format correctly" do
-        @address.to_s( '%z' ).should eql( '31234-7890' )
+      it "should obey the %z format correctly" do
+        @address.to_s( '%z' ).should eql( '33333-1111' )
       end
 
-      it "should obey the %s1 format correctly" do
+      it "should obey the %C format correctly" do
         @address.to_s( '%C' ).should eql( 'United States' )
       end
     end

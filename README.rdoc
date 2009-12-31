@@ -51,18 +51,18 @@ Will yield:
 
   class UsersHaveHomeAddress < ActiveRecord::Migration
     def self.up
-      add_column :users, :home_address_street, :string, :limit => 255
+      add_column :users, :home_address_raw_street, :string, :limit => 255
       add_column :users, :home_address_city, :string, :limit => 50
       add_column :users, :home_address_state_or_province, :string, :limit => 50
-      add_column :users, :home_address_zip_code, :string, :limit => 9
+      add_column :users, :home_address_raw_zip_code, :string, :limit => 9
       add_column :users, :home_address_country, :string, :limit => 75
     end
 
     def self.down
-      remove_column :users, :home_address_street
+      remove_column :users, :home_address_raw_street
       remove_column :users, :home_address_city
       remove_column :users, :home_address_state_or_province
-      remove_column :users, :home_address_zip_code
+      remove_column :users, :home_address_raw_zip_code
       remove_column :users, :home_address_country
     end
   end
@@ -84,10 +84,10 @@ or (with identical results):
 
 Reference the raw database fields:
 
-  @user.home_address_street                                 # => 123 Jones Street###Suite 540
+  @user.home_address_raw_street                             # => 123 Jones Street###Suite 540
   @user.home_address_city                                   # => Atlanta
   @user.home_address_state_or_province                      # => GA
-  @user.home_address_zip_code                               # => 333331111
+  @user.home_address_raw_zip_code                           # => 333331111
   @user.home_address_country                                # => United States
 
 Reference the sub parts of the field:

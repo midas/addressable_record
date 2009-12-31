@@ -5,7 +5,7 @@ irb = RUBY_PLATFORM =~ /(:?mswin|mingw)/ ? 'irb.bat' : 'irb'
 libs =  " -r irb/completion"
 # Perhaps use a console_lib to store any extra methods I may want available in the cosole
 # libs << " -r #{File.dirname(__FILE__) + '/../lib/console_lib/console_logger.rb'}"
-libs <<  " -r 'rubygems' -r 'active_record' -r 'binary_search/pure' -r 'geographer' -r '#{File.dirname(__FILE__) + '/../lib/addressable_record.rb'}'"
+libs <<  " -r 'rubygems' -r 'active_record' -r 'binary_search/pure' -r 'geographer' -r '#{File.dirname(__FILE__) + '/../lib/addressable_record.rb'}' -r '#{File.dirname(__FILE__) + '/environment'}' -r '#{File.dirname(__FILE__) + '/seed'}'"
 
 puts "Loading addressable_record gem"
 exec "#{irb} #{libs} --simple-prompt"

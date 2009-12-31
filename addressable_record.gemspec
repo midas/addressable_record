@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "addressable_record.gemspec",
      "lib/addressable_record.rb",
      "lib/addressable_record/active_record_extesions.rb",
      "lib/addressable_record/address.rb",
