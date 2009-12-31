@@ -44,8 +44,8 @@ Run:
 
 Generate a migration to add the necessary field to the database:
 
-  script/generate phone_number_migration {file_name} {table_name} {field_name}
-  script/generate phone_number_migration users_have_home_address users home_address
+  script/generate addressable_record_migration {file_name} {table_name} {field_name}
+  script/generate addressable_record_migration users_have_home_address users home_address
 
 Will yield:
 
