@@ -11,6 +11,7 @@ begin
     gem.homepage = "http://github.com/midas/addressable_record"
     gem.authors = ["C. Jason Harrelson (midas)"]
     gem.add_dependency "geographer", ">= 1.1.1"
+    gem.add_dependency "activerecord", ">= 2.3"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
