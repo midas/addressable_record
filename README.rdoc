@@ -45,11 +45,11 @@ Run:
 Generate a migration to add the necessary field to the database:
 
   script/generate phone_number_migration {file_name} {table_name} {field_name}
-  script/generate phone_number_migration users_have_a_home_address users home_address
+  script/generate phone_number_migration users_have_home_address users home_address
 
 Will yield:
 
-  class <%= class_name %> < ActiveRecord::Migration
+  class UsersHaveHomeAddress < ActiveRecord::Migration
     def self.up
       add_column :users, :home_address_street, :string, :limit => 255
       add_column :users, :home_address_city, :string, :limit => 50
@@ -76,7 +76,7 @@ Call the macro in an ActiveRecord descendant:
 Set the field equal to something:
 
   @user.home_address = AddressableRecord::Address.new( :raw_street => '123 Jones Street###Suite 540', :city => 'Atlanta',
-                         :state_or_province => 'GA', :raw_zip_code => '312347890', :country => 'United States' )
+                         :state_or_province => 'GA', :raw_zip_code => '333331111', :country => 'United States' )
 
 or (with identical results):
 
