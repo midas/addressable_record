@@ -71,7 +71,7 @@ describe "AddressableRecord::Address" do
 
     describe "with a country" do
       before :each do
-        @address = @klass.parse( @address_elements_without_country +  ['United States'] )
+        @address = @klass.parse( @address_elements_without_country + ['United States'] )
       end
 
       it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333-1111, United States"
@@ -79,6 +79,15 @@ describe "AddressableRecord::Address" do
 
     describe "without a country" do
       before :each do
+        @address = @klass.parse( @address_elements_without_country )
+      end
+
+      it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333-1111, United States"
+    end
+
+    describe "with a spelled out state name" do
+      before :each do
+        @address_elements_without_country[@address_elements_without_country.index( 'GA' )] = 'Georgia'
         @address = @klass.parse( @address_elements_without_country )
       end
 

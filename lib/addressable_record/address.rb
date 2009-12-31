@@ -13,7 +13,25 @@ module AddressableRecord
       @streets = AddressableRecord::Address.parse_street( attrs[:raw_street] || '' )
       raw_zip = (attrs[:raw_zip_code] || '')
       @zip_code = raw_zip.size == 5 ? @raw_zip_code : raw_zip.gsub( /(\d{5})(\d{4})/, "\\1#{@@zip_code_delimiter}\\2" )
-      
+
+      @@pattern_map ||= {
+              /%s/ => @streets.join( @@street_delimiter ) || "",
+              /%s1/ => @streets[0] || "",
+              /%s2/ => @streets[1] || "",
+              /%s3/ => @streets[2] || "",
+              /%s4/ => @streets[3] || "",
+              /%s5/ => @streets[4] || "",
+              /%c/ => @city || "",
+              /%S/ => @state_or_province || "",
+              /%z/ => @zip_code || "",
+              /%C/ => @country || ""
+      }
+
+      @@patterns ||= {
+              :us => "%s, %c, %S, %z, %C",
+              :us_short => "%s, %c, %S, %z"
+      }
+
       self.freeze
     end
     
@@ -44,6 +62,22 @@ module AddressableRecord
     
     def self.parse_street( street ) #:nodoc:
       return street.split( @@street_delimiter )
+    end
+
+    # Outputs a address based on pattern provided.
+    #
+    # Symbols:
+    #   %s - street
+    #   %c - city
+    #   %S - state
+    #   %z - zip code
+    #   %C - country
+    #
+    def to_s( pattern=nil )
+      to_return = pattern.is_a?( Symbol ) ? @@patterns[pattern] : pattern
+      to_return = @@patterns[:us_short] if to_return.empty?
+      @@pattern_map.each { |pat, replacement| to_return = to_return.gsub( pat, replacement ) }
+      to_return.strip
     end
     
     protected
