@@ -60,8 +60,8 @@ describe "AddressableRecord::Address" do
     @klass.send( :find_state_position, ['123 Jones St.', 'Atlanta', 'Georgia', '33333', ] ).should eql( 2 )
   end
 
-  it "should return nill if an address array does not have a state in it" do
-    @klass.send( :find_state_position, ['123 Jones St.', 'Atlanta', '33333', ] ).should be_nil
+  it "should return nil if an address array does not have a state in it" do
+    @klass.send( :find_state_position, ['123 Jones St.', 'Atlanta', '33333' ] ).should be_nil
   end
 
   describe "when parsing an array of address elements" do
@@ -92,6 +92,40 @@ describe "AddressableRecord::Address" do
       end
 
       it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333-1111, United States"
+    end
+
+    describe "when printing out a formatted string" do
+      before :each do
+        @address = @klass.parse( @address_elements_without_country )
+      end
+      
+      it "should obey the :us format correctly" do
+        @address.to_s( :us ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 31234-7890' )
+      end
+
+      it "should obey the :us_long format correctly" do
+        @address.to_s( :us_long ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 31234-7890, United States' )
+      end
+
+      it "should obey the %s1 format correctly" do
+        @address.to_s( '%s' ).should eql( '123 Jones Street, Suite 540' )
+      end
+
+      it "should obey the %s1 format correctly" do
+        @address.to_s( '%c' ).should eql( 'Atlanta' )
+      end
+
+      it "should obey the %s1 format correctly" do
+        @address.to_s( '%S' ).should eql( 'GA' )
+      end
+
+      it "should obey the %s1 format correctly" do
+        @address.to_s( '%z' ).should eql( '31234-7890' )
+      end
+
+      it "should obey the %s1 format correctly" do
+        @address.to_s( '%C' ).should eql( 'United States' )
+      end
     end
   end
 end

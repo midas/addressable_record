@@ -15,7 +15,7 @@ module AddressableRecord
       @zip_code = raw_zip.size == 5 ? @raw_zip_code : raw_zip.gsub( /(\d{5})(\d{4})/, "\\1#{@@zip_code_delimiter}\\2" )
 
       @@pattern_map ||= {
-              /%s/ => @streets.join( @@street_delimiter ) || "",
+              /%s/ => @streets.join( ', ' ) || "",
               /%s1/ => @streets[0] || "",
               /%s2/ => @streets[1] || "",
               /%s3/ => @streets[2] || "",
@@ -28,8 +28,8 @@ module AddressableRecord
       }
 
       @@patterns ||= {
-              :us => "%s, %c, %S, %z, %C",
-              :us_short => "%s, %c, %S, %z"
+              :us_long => "%s, %c %S, %z, %C",
+              :us => "%s, %c %S, %z"
       }
 
       self.freeze
@@ -75,7 +75,7 @@ module AddressableRecord
     #
     def to_s( pattern=nil )
       to_return = pattern.is_a?( Symbol ) ? @@patterns[pattern] : pattern
-      to_return = @@patterns[:us_short] if to_return.empty?
+      to_return = @@patterns[:us_short] if to_return.nil? || to_return.empty?
       @@pattern_map.each { |pat, replacement| to_return = to_return.gsub( pat, replacement ) }
       to_return.strip
     end

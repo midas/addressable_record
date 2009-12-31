@@ -15,6 +15,7 @@ Encapsulates the composed of pattern for addresses into any easy to use library.
 * Use 1 or more street address parts with no limit.
 * Overrides #to_s with format strings to control output.
 * Pre-defined named format strings to control output.
+* Migration generator to generate a migration file containing the correct fields to hold the address data.
 
 
 == REQUIREMENTS
@@ -46,6 +47,26 @@ Generate a migration to add the necessary field to the database:
   script/generate phone_number_migration {file_name} {table_name} {field_name}
   script/generate phone_number_migration users_have_a_home_address users home_address
 
+Will yield:
+
+  class <%= class_name %> < ActiveRecord::Migration
+    def self.up
+      add_column :users, :home_address_street, :string, :limit => 255
+      add_column :users, :home_address_city, :string, :limit => 50
+      add_column :users, :home_address_state_or_province, :string, :limit => 50
+      add_column :users, :home_address_zip_code, :string, :limit => 9
+      add_column :users, :home_address_country, :string, :limit => 75
+    end
+
+    def self.down
+      remove_column :users, :home_address_street
+      remove_column :users, :home_address_city
+      remove_column :users, :home_address_state_or_province
+      remove_column :users, :home_address_zip_code
+      remove_column :users, :home_address_country
+    end
+  end
+
 Call the macro in an ActiveRecord descendant:
 
   class User < ActiveRecord::Base
@@ -54,31 +75,47 @@ Call the macro in an ActiveRecord descendant:
 
 Set the field equal to something:
 
-  @user.home_address = AddressableRecord::Address.new(  )
+  @user.home_address = AddressableRecord::Address.new( :raw_street => '123 Jones Street###Suite 540', :city => 'Atlanta', :state_or_province => 'GA',
+                         :raw_zip_code => '312347890', :country => 'United States' )
 
 or (with identical results):
 
   @user.home_address = ['123 Jones Street', 'Suite 540', 'Atlanta', 'GA', '33333-1111']
 
-Use the field:
+Reference the raw database fields:
 
-  @user.home_address
-
-Use formats to control the output:
-
-
-
-Use pre-defined named formats to control the output:
-
-
-
-Reference the raw database field:
-
-
+  @user.home_address_street                                 # => 123 Jones Street###Suite 540
+  @user.home_address_city                                   # => Atlanta
+  @user.home_address_state_or_province                      # => GA
+  @user.home_address_zip_code                               # => 333331111
+  @user.home_address_country                                # => United States
 
 Reference the sub parts of the field:
 
+  @user.home_address.streets.first                          # => 123 Jones Street
+  @user.home_address.streets.join( ', ' )                   # => 123 Jones Street, Suite 540
+  @user.home_address.streets[1]                             # => Suite 540
+  @user.home_address.street                                 # => 123 Jones Street, Suite 540
+  @user.home_address.city                                   # => Atlanta
+  @user.home_address.state_or_province                      # => GA
+  @user.home_address.state                                  # => GA
+  @user.home_address.province                               # => GA
+  @user.home_address.zip_code                               # => 33333-1111
+  @user.home_address.country                                # => United States
 
+Use formats to control the output:
+
+  @user.home_address.to_s( '%s' )                           # => 123 Jones Street, Suite 540
+  @user.home_address.to_s( '%c' )                           # => Atlanta
+  @user.home_address.to_s( '%S' )                           # => GA
+  @user.home_address.to_s( '%z' )                           # => 33333-1111
+  @user.home_address.to_s( '%C' )                           # => United States
+  @user.home_address.to_s( '%c %S' )                        # => Atlanta GA
+
+Use pre-defined named formats to control the output:
+
+  @user.home_address.to_s( :us_long )                       # => 123 Jones Street, Suite 540, Atlanta GA, 33333-1111, United States
+  @user.home_address.to_s( :us )                            # => 123 Jones Street, Suite 540, Atlanta GA, 33333-1111
 
 
 == Note on Patches/Pull Requests
