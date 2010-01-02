@@ -1,0 +1,8 @@
+== 1.0.1 2010-01-01
+
+* Added a join method for specifying output formats a different way than to_s.
+
+
+== 1.0.0 2009-12-30
+
+* Initial release.

@@ -79,6 +79,30 @@ module AddressableRecord
       @pattern_map.each { |pat, replacement| to_return = to_return.gsub( pat, replacement ) }
       to_return.strip
     end
+    
+    # Outputs the parts of teh address delimited by specified delimiter(s).
+    #
+    # *parameters*
+    # opts:: Can be a string that is the delimiter or an an options hash.
+    #
+    # *options*
+    # delimiter:: The string to delimit the address with.
+    # street_delimiter:: An additional delimiter to use only on the street fields.
+    # country:: Outputs the country when true, otherwise no country is output (defaults to false).
+    #
+    def join( opts )
+      if opts.is_a?( Hash )
+        options = opts
+        options[:street_delimiter] ||= options[:delimiter]
+      elsif opts.is_a?( String )
+        options = {}
+        options[:street_delimiter] = options[:delimiter] = opts
+        options[:country] = false
+      end
+      
+      to_return = "#{self.street( options[:street_delimiter] )}#{options[:delimiter]}#{self.city}, #{self.state_or_province} #{self.zip_code}"
+      return options[:country] ? to_return + "#{options[:delimiter]}#{self.country}" : to_return
+    end
 
     protected
 
