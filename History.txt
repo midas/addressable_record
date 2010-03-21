@@ -1,3 +1,8 @@
+== 1.0.3 2010-03-21
+
+* Fixed a bug where a 5 digit zip code fails to load in the initializer correctly.
+
+
 == 1.0.2 2010-03-21
 
 * Added ability for the composed_of attribute to parse a Hash of address elements.
