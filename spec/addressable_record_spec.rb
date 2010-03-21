@@ -87,6 +87,12 @@ describe "AddressableRecord" do
       it "should agree that the country is United States" do
         @user.address.country.should eql( 'United States' )
       end
+      
+      it "should handle a 5 digit zip code" do
+        @user = User.new( :name => 'John Smith', :address => @address_attributes.merge( :raw_zip_code => '31234' ) )
+        @user.save!
+        @user.address.zip_code.should eql( '31234' )
+      end
     end
   end
   

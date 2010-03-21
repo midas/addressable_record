@@ -17,7 +17,10 @@ module AddressableRecord
 
       @streets = AddressableRecord::Address.parse_street( attrs[:raw_street] || '' )
       raw_zip = (attrs[:raw_zip_code] || '')
-      @zip_code = raw_zip.size == 5 ? @raw_zip_code : raw_zip.gsub( /(\d{5})(\d{4})/, "\\1#{@@zip_code_delimiter}\\2" )
+      puts raw_zip
+      puts raw_zip.size
+      @zip_code = raw_zip.size == 5 ? raw_zip : raw_zip.gsub( /(\d{5})(\d{4})/, "\\1#{@@zip_code_delimiter}\\2" )
+      puts @zip_code
 
       @pattern_map = {
               '%s' => @streets.join( ', ' ) || "",
