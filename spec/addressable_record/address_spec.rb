@@ -64,6 +64,10 @@ describe "AddressableRecord::Address" do
     @klass.send( :find_state_position, ['123 Jones St.', 'Atlanta', '33333' ] ).should be_nil
   end
 
+  describe "when parsing an hash of address elements" do
+    
+  end
+  
   describe "when parsing an array of address elements" do
     before :each do
       @address_elements_without_country = ['123 Jones Street', 'Suite 540', 'Atlanta', 'GA', '33333-1111']

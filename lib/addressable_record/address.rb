@@ -52,7 +52,7 @@ module AddressableRecord
     end
 
     def self.parse( address )
-      raise "Cannot convert #{address.class.to_s.downcase} to an AddressableRecord::Address" unless [Array].include?( address.class )
+      raise "Cannot convert #{address.class.to_s.downcase} to an AddressableRecord::Address" unless [Array, Hash].include?( address.class )
       self.send( :"parse_#{address.class.to_s.downcase}", address )
     end
 
@@ -129,6 +129,10 @@ module AddressableRecord
         (0..state_pos-2).each { |i| streets << address_elements[i] }
         street = streets.join( @@street_delimiter )
         return AddressableRecord::Address.new( :raw_street => street, :city => city, :state_or_province => state, :raw_zip_code => zip_code, :country => country )
+      end
+      
+      def parse_hash( address )
+        return AddressableRecord::Address.new( address )
       end
 
       def find_state_position( address_elements )

@@ -18,7 +18,7 @@ describe "AddressableRecord" do
       @user.save!
     end
     
-    it "should respond to home_address" do
+    it "should respond to address" do
       @user.respond_to?( :address ).should be_true
     end
     
@@ -48,6 +48,45 @@ describe "AddressableRecord" do
 
     it "should agree that the country is United States" do
       @user.address.country.should eql( 'United States' )
+    end
+    
+    describe "when creating with a Hash of address elements" do
+      before :each do
+        @user = User.new( :name => 'John Smith', :address => @address_attributes )
+        @user.save!
+      end
+      
+      it "should respond to address" do
+        @user.respond_to?( :address ).should be_true
+      end
+
+      it "should be an AddressableRecord::Address" do
+        @user.address.is_a?( AddressableRecord::Address ).should be_true
+      end
+
+      it "should agree that the size of streets is 2" do
+        @user.address.streets.size.should eql( 2 )
+      end
+
+      it "should agree that the street address is 123 Jones Street, Suite 540" do
+        @user.address.street.should eql( '123 Jones Street, Suite 540' )
+      end
+
+      it "should agree that the city is Atlanta" do
+        @user.address.city.should eql( 'Atlanta' )
+      end
+
+      it "should agree that the state is GA" do
+        @user.address.state.should eql( 'GA' )
+      end
+
+      it "should agree that the zip_code is 31234-7890" do
+        @user.address.zip_code.should eql( '31234-7890' )
+      end
+
+      it "should agree that the country is United States" do
+        @user.address.country.should eql( 'United States' )
+      end
     end
   end
   
