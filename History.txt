@@ -1,3 +1,8 @@
+== 1.0.2 2010-03-21
+
+* Added ability for the composed_of attribute to parse a Hash of address elements.
+
+
 == 1.0.1 2010-01-01
 
 * Added a join method for specifying output formats a different way than to_s.

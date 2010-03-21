@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{addressable_record}
-  s.version = "1.0.1"
+  s.version = "1.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["C. Jason Harrelson (midas)"]
-  s.date = %q{2010-01-01}
+  s.date = %q{2010-03-21}
   s.description = %q{Encapsulates the composed of pattern for addresses into any easy to use library.  Provides convenience methods for formatting, parsing, etc.}
   s.email = %q{jason@lookforwardenterprises.com}
   s.extra_rdoc_files = [
