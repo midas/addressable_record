@@ -1,3 +1,8 @@
+== 1.0.4 2010-03-29
+
+Removed some puts statements that should not have been left in the code.
+
+
 == 1.0.3 2010-03-21
 
 * Fixed a bug where a 5 digit zip code fails to load in the initializer correctly.
