@@ -46,8 +46,8 @@ describe "AddressableRecord" do
       @user.address.zip_code.should eql( '31234-7890' )
     end
 
-    it "should agree that the country is United States" do
-      @user.address.country.should eql( 'United States' )
+    it "should agree that the country is U.S.A." do
+      @user.address.country.should eql( 'U.S.A.' )
     end
     
     describe "when creating with a Hash of address elements" do
@@ -84,8 +84,8 @@ describe "AddressableRecord" do
         @user.address.zip_code.should eql( '31234-7890' )
       end
 
-      it "should agree that the country is United States" do
-        @user.address.country.should eql( 'United States' )
+      it "should agree that the country is U.S.A." do
+        @user.address.country.should eql( 'U.S.A.' )
       end
       
       it "should handle a 5 digit zip code" do
@@ -142,12 +142,12 @@ describe "AddressableRecord" do
         @person.contact_addresses.first.address.zip_code.should eql( '31234-7890' )
       end
 
-      it "should agree that the address country is United States" do
-        @address.country.should eql( 'United States' )
+      it "should agree that the address country is U.S.A." do
+        @address.country.should eql( 'U.S.A.' )
       end
 
-      it "should agree that the associated country is United States" do
-        @person.contact_addresses.first.address.country.should eql( 'United States' )
+      it "should agree that the associated country is U.S.A." do
+        @person.contact_addresses.first.address.country.should eql( 'U.S.A.' )
       end
     end
   end

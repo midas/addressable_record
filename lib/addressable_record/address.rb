@@ -7,8 +7,8 @@ module AddressableRecord
     @@street_delimiter ||= '###'
     @@zip_code_delimiter ||= '-'
     @@patterns ||= {
-            :us_long => "%s, %c %S, %z, %C",
-            :us => "%s, %c %S, %z"
+            :us_long => "%s, %c, %S %z %C",
+            :us => "%s, %c, %S %z"
     }
 
     def initialize( attrs )
@@ -123,7 +123,7 @@ module AddressableRecord
         raise 'Cannot parse address array.  No zip code found.' unless address_elements.size >= (state_pos + 1)
         state = States.by_abbreviation.has_key?( address_elements[state_pos] ) ? address_elements[state_pos] : States.by_name[address_elements[state_pos]]
         zip_code = address_elements[state_pos+1].gsub( /#{@@zip_code_delimiter}/, '' )
-        country = address_elements.size >= (state_pos + 3) ? address_elements[state_pos+2] : 'United States'
+        country = address_elements.size >= (state_pos + 3) ? address_elements[state_pos+2] : 'U.S.A.'
         city = address_elements[state_pos-1]
         streets = []
         (0..state_pos-2).each { |i| streets << address_elements[i] }

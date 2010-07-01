@@ -75,10 +75,10 @@ describe "AddressableRecord::Address" do
 
     describe "with a country" do
       before :each do
-        @address = @klass.parse( @address_elements_without_country + ['United States'] )
+        @address = @klass.parse( @address_elements_without_country + ['U.S.A.'] )
       end
 
-      it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333-1111, United States"
+      it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A."
     end
 
     describe "without a country" do
@@ -86,7 +86,7 @@ describe "AddressableRecord::Address" do
         @address = @klass.parse( @address_elements_without_country )
       end
 
-      it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333-1111, United States"
+      it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A."
     end
 
     describe "with a spelled out state name" do
@@ -95,7 +95,7 @@ describe "AddressableRecord::Address" do
         @address = @klass.parse( @address_elements_without_country )
       end
 
-      it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333-1111, United States"
+      it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A."
     end
 
     describe "when printing out a formatted string" do
@@ -104,11 +104,11 @@ describe "AddressableRecord::Address" do
       end
       
       it "should obey the :us format correctly" do
-        @address.to_s( :us ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 33333-1111' )
+        @address.to_s( :us ).should eql( '123 Jones Street, Suite 540, Atlanta, GA 33333-1111' )
       end
 
       it "should obey the :us_long format correctly" do
-        @address.to_s( :us_long ).should eql( '123 Jones Street, Suite 540, Atlanta GA, 33333-1111, United States' )
+        @address.to_s( :us_long ).should eql( '123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A.' )
       end
 
       it "should obey the %s format correctly" do
@@ -148,7 +148,7 @@ describe "AddressableRecord::Address" do
       end
 
       it "should obey the %C format correctly" do
-        @address.to_s( '%C' ).should eql( 'United States' )
+        @address.to_s( '%C' ).should eql( 'U.S.A.' )
       end
     end
   end

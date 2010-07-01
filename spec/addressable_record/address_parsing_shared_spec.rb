@@ -1,6 +1,6 @@
 require File.expand_path( File.dirname(__FILE__) + '/../spec_helper' )
 
-shared_examples_for "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333-1111, United States" do
+shared_examples_for "The address 123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A." do
   it "should be an AddressableRecord::Address" do
     @address.is_a?( AddressableRecord::Address ).should be_true
   end
@@ -25,8 +25,8 @@ shared_examples_for "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333
     @address.zip_code.should eql( '33333-1111' )
   end
 
-  it "should agree that the country is United States" do
-    @address.country.should eql( 'United States' )
+  it "should agree that the country is U.S.A." do
+    @address.country.should eql( 'U.S.A.' )
   end
   
   it "should join the address correctly given a string delimiter argument" do
@@ -42,10 +42,10 @@ shared_examples_for "The address 123 Jones Street, Suite 540, Atlanta, GA, 33333
   end
   
   it "should join the address correctly given a delimiter and country option" do
-    @address.join( :delimiter => '<br/>', :country => true ).should eql( '123 Jones Street<br/>Suite 540<br/>Atlanta, GA 33333-1111<br/>United States' )
+    @address.join( :delimiter => '<br/>', :country => true ).should eql( '123 Jones Street<br/>Suite 540<br/>Atlanta, GA 33333-1111<br/>U.S.A.' )
   end
   
   it "should join the address correctly given a delimiter and street_delimiter option" do
-    @address.join( :delimiter => '<br/>', :street_delimiter => '###', :country => true ).should eql( '123 Jones Street###Suite 540<br/>Atlanta, GA 33333-1111<br/>United States' )
+    @address.join( :delimiter => '<br/>', :street_delimiter => '###', :country => true ).should eql( '123 Jones Street###Suite 540<br/>Atlanta, GA 33333-1111<br/>U.S.A.' )
   end
 end
