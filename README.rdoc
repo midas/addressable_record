@@ -34,7 +34,7 @@ Encapsulates the composed of pattern for addresses into any easy to use library.
 
 Add to environment file:
 
-  config.gem "addressable_record", :version => '1.0.0', :source => 'http://gemcutter.org'
+  config.gem "addressable_record", :version => '~>1.0.0', :source => 'http://gemcutter.org'
 
 Run:
 
