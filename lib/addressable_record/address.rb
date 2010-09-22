@@ -2,6 +2,11 @@ require File.dirname(__FILE__) + '/states'
 
 module AddressableRecord
   class Address
+    NATURAL_OR_CSV_STRING_REGEX = /^\s*?(?:([^,]+?)),\s*?(?:([^,]+?)),\s*?(?:(?:([^,]+?)),\s*?)??([A-Z]{2}),??\s*?(\d{5}(?:-\d{4})?)\s*$/ # /^(.+),\s*(.+),\s*(.+),\s*(.{2}),?\s*(\d{5})-?(\d{4})?\s*$/
+    NATURAL_OR_CSV_STRING_INVALID_MESSAGE = "invalid format, try something like: 123 Some Street, Suite 123, Some City, AL 11111-1111"
+    NATURAL_STRING_REGEX = /^(.+),\s*(.+),\s*(.+),\s*(.{2})\s*(\d{5})-?(\d{4})?\s*$/
+    CSV_STRING_REGEX = /^(.+),\s*(.+),\s*(.+),\s*(.{2}),\s*(\d{5})-?(\d{4})?\s*$/
+
     attr_reader :raw_street, :streets, :city, :state_or_province, :zip_code, :country
 
     @@street_delimiter ||= '###'
@@ -76,10 +81,15 @@ module AddressableRecord
     #   %C - country
     #
     def to_s( pattern=nil )
+      return '' if is_blank?
       to_return = pattern.is_a?( Symbol ) ? @@patterns[pattern] : pattern
       to_return = @@patterns[:us] if to_return.nil? || to_return.empty?
       @pattern_map.each { |pat, replacement| to_return = to_return.gsub( pat, replacement ) }
       to_return.strip
+    end
+
+    def is_blank?
+      raw_street.blank? && city.blank? && state_or_province.blank? && raw_zip_code.blank? && country.blank?
     end
 
     # Outputs the parts of teh address delimited by specified delimiter(s).
@@ -121,14 +131,17 @@ module AddressableRecord
 
       def parse_array( address_elements ) #:nodoc:
         state_pos = find_state_position( address_elements )
-        raise 'Cannot parse address array.  Failed to find a state.' if state_pos.nil?
-        raise 'Cannot parse address array.  No zip code found.' unless address_elements.size >= (state_pos + 1)
+        # puts address_elements.class.name, address_elements, state_pos
+        # raise 'Cannot parse address array.  Failed to find a state.' if state_pos.nil?
+        # raise 'Cannot parse address array.  No zip code found.' unless address_elements.size >= (state_pos + 1)
+        return nil if state_pos.nil?
+        return nil unless address_elements.size >= (state_pos + 1)
         state = States.by_abbreviation.has_key?( address_elements[state_pos] ) ? address_elements[state_pos] : States.by_name[address_elements[state_pos]]
         zip_code = address_elements[state_pos+1].gsub( /#{@@zip_code_delimiter}/, '' )
         country = address_elements.size >= (state_pos + 3) ? address_elements[state_pos+2] : 'U.S.A.'
         city = address_elements[state_pos-1]
         streets = []
-        (0..state_pos-2).each { |i| streets << address_elements[i] }
+        (0..state_pos-2).each { |i| streets << address_elements[i].strip }
         street = streets.join( @@street_delimiter )
         return AddressableRecord::Address.new( :raw_street => street, :city => city, :state_or_province => state, :raw_zip_code => zip_code, :country => country )
       end
@@ -138,12 +151,35 @@ module AddressableRecord
       end
 
       def parse_string( address )
-        parts = address.split( ',' )
-        parts = parts.map { |p| p.strip }
+        parts = nil
+        pos = find_state_position_in_string( address )
+        return blank_address if pos.nil?
+
+        if !pos.nil? && address[pos+2,1] == ','
+          parts = address.split( ',' )
+          parts = parts.map { |p| p.strip }
+        else
+          pre_state_string = address[0,pos]
+          parts = pre_state_string.split( ',' ).reject { |p| p.blank? }
+          state_on_string = address[pos,address.size-pos]
+          parts += state_on_string.split( /\s+/ ).reject { |p| p.blank? }
+        end
+
         parse_array( parts )
       end
 
+      def blank_address
+        self.new( {} )
+      end
+
       def find_state_position( address_elements )
+        unless [Array,String].include?( address_elements.class )
+          raise "Cannot search for state position in a #{address_elements.class.name}"
+        end
+        self.send( :"find_state_position_in_#{address_elements.class.to_s.downcase}", address_elements )
+      end
+
+      def find_state_position_in_array( address_elements )
         # Look for state abbreviation
         possible_abbreviation_positions = find_possible_state_abbrev_positions( address_elements )
         state_index = possible_abbreviation_positions.detect { |i| States.by_abbreviation.has_key?( address_elements[i] ) }
@@ -151,6 +187,21 @@ module AddressableRecord
 
         # Look for state name
         (0..address_elements.size-1).detect { |i| States.by_name.has_key?( address_elements[i] ) }
+      end
+
+      def find_state_position_in_string( address_elements )
+        idx = nil
+        States.abbreviations.each do |abbreviation|
+          idx = address_elements.rindex( abbreviation )
+          return idx unless idx.nil?
+        end
+
+        States.names.each do |name|
+          idx = address_elements.rindex( name )
+          return idx unless idx.nil?
+        end
+
+        nil
       end
 
       def find_possible_state_abbrev_positions( address_array )

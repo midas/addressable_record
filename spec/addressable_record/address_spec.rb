@@ -64,7 +64,31 @@ describe "AddressableRecord::Address" do
     @klass.send( :find_state_position, ['123 Jones St.', 'Atlanta', '33333' ] ).should be_nil
   end
 
-  describe "when parsng a string of address elements" do
+  describe "when parsng a naturally puncuated string of address elements" do
+     before :each do
+       @address_elements_without_country = "123 Jones Street, Suite 540, Atlanta, GA 33333-1111"
+       @address_elements = "123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A."
+     end
+
+     # ^(.*),(.*),(.*),(.*),?(\d{5})-?(\d{4})?$
+     # describe "with a country" do
+     #   before :each do
+     #     @address = @address_elements
+     #   end
+     #
+     #   it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A."
+     # end
+
+     # describe "without a country" do
+     #   before :each do
+     #     @address = @address_elements_without_country
+     #   end
+     #
+     #   it_should_behave_like "The address 123 Jones Street, Suite 540, Atlanta, GA 33333-1111 U.S.A."
+     # end
+  end
+
+  describe "when parsng a comma separated string of address elements" do
      before :each do
        @address_elements_without_country = ['123 Jones Street', 'Suite 540', 'Atlanta', 'GA', '33333-1111']
      end
@@ -315,6 +339,44 @@ describe "AddressableRecord::Address" do
 
       it "should obey the %C format correctly" do
         @address.to_s( '%C' ).should eql( 'U.S.A.' )
+      end
+    end
+
+    describe "having a regular expression for a string address" do
+      describe "that is naturally formatted" do
+        describe "without a contry"do
+          it "should match" do
+            # "123 Jones Street, Suite 111, Atlanta, GA 31555"
+          end
+
+          it "should ignore white space" do
+
+          end
+        end
+
+        describe "with a country" do
+          it "should match" do
+            # "123 Jones Street, Suite 111, Atlanta, GA 31555, United States"
+          end
+
+          it "should ignore white space" do
+
+          end
+        end
+      end
+
+      describe "that is comma separated formatted" do
+        it "should match" do
+
+        end
+
+        it "should ignore white space" do
+
+        end
+      end
+
+      describe "similar strings" do
+
       end
     end
   end
