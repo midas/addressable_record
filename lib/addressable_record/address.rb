@@ -48,11 +48,13 @@ module AddressableRecord
     end
 
     def street( delimiter=', ' )
-      return @streets.nil? ? '' : @streets.join( delimiter ) 
+      return @streets.nil? ? '' : @streets.join( delimiter )
     end
 
     def self.parse( address )
-      raise "Cannot convert #{address.class.to_s.downcase} to an AddressableRecord::Address" unless [Array, Hash].include?( address.class )
+      unless [Array, Hash, String].include?( address.class )
+        raise "Cannot convert #{address.class.to_s.downcase} to an AddressableRecord::Address"
+      end
       self.send( :"parse_#{address.class.to_s.downcase}", address )
     end
 
@@ -79,7 +81,7 @@ module AddressableRecord
       @pattern_map.each { |pat, replacement| to_return = to_return.gsub( pat, replacement ) }
       to_return.strip
     end
-    
+
     # Outputs the parts of teh address delimited by specified delimiter(s).
     #
     # *parameters*
@@ -99,7 +101,7 @@ module AddressableRecord
         options[:street_delimiter] = options[:delimiter] = opts
         options[:country] = false
       end
-      
+
       to_return = "#{self.street( options[:street_delimiter] )}#{options[:delimiter]}#{self.city}, #{self.state_or_province} #{self.zip_code}"
       return options[:country] ? to_return + "#{options[:delimiter]}#{self.country}" : to_return
     end
@@ -130,9 +132,15 @@ module AddressableRecord
         street = streets.join( @@street_delimiter )
         return AddressableRecord::Address.new( :raw_street => street, :city => city, :state_or_province => state, :raw_zip_code => zip_code, :country => country )
       end
-      
+
       def parse_hash( address )
         return AddressableRecord::Address.new( address )
+      end
+
+      def parse_string( address )
+        parts = address.split( ',' )
+        parts = parts.map { |p| p.strip }
+        parse_array( parts )
       end
 
       def find_state_position( address_elements )

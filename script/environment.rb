@@ -40,4 +40,4 @@ class ContactAddress < ActiveRecord::Base
 end
 
 ADDRESS_ATTRIBUTES = {:raw_street => '123 Jones Street###Suite 540', :city => 'Atlanta', :state_or_province => 'GA',
-  :raw_zip_code => '312347890', :country => 'U.S.A.' }
+  :raw_zip_code => '333331111', :country => 'U.S.A.' }

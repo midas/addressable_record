@@ -10,18 +10,18 @@ describe "AddressableRecord" do
       ActiveRecord::Base.respond_to?( :addresses ).should be_true
     end
   end
-  
+
   describe "having models descending from ActiveRecord" do
     before :each do
       @address_attributes = ADDRESS_ATTRIBUTES
       @user = User.new( :name => 'John Smith', :address => AddressableRecord::Address.new( @address_attributes ) )
       @user.save!
     end
-    
+
     it "should respond to address" do
       @user.respond_to?( :address ).should be_true
     end
-    
+
     it "should be an AddressableRecord::Address" do
       @user.address.is_a?( AddressableRecord::Address ).should be_true
     end
@@ -42,20 +42,34 @@ describe "AddressableRecord" do
       @user.address.state.should eql( 'GA' )
     end
 
-    it "should agree that the zip_code is 31234-7890" do
-      @user.address.zip_code.should eql( '31234-7890' )
+    it "should agree that the zip_code is 33333-1111" do
+      @user.address.zip_code.should eql( '33333-1111' )
     end
 
     it "should agree that the country is U.S.A." do
       @user.address.country.should eql( 'U.S.A.' )
     end
-    
+
+    # describe "when creating with a string of address elements" do
+    #   before :each do
+    #     attributes = ADDRESS_ATTRIBUTES
+    #     @address_attributes =
+    #       [attributes[:raw_street],attributes[:city],attributes[:state_or_province],attributes[:raw_zip_code],attributes[:country]]
+    #     @klass = AddressableRecord::Address
+    #     @instance = AddressableRecord::Address.new( @address_attributes.join( ', ' ) )
+    #   end
+    #
+    #   it "should create an address record" do
+    #     @instance.is_a?( @klass ).should be_true
+    #   end
+    # end
+
     describe "when creating with a Hash of address elements" do
       before :each do
         @user = User.new( :name => 'John Smith', :address => @address_attributes )
         @user.save!
       end
-      
+
       it "should respond to address" do
         @user.respond_to?( :address ).should be_true
       end
@@ -80,14 +94,14 @@ describe "AddressableRecord" do
         @user.address.state.should eql( 'GA' )
       end
 
-      it "should agree that the zip_code is 31234-7890" do
-        @user.address.zip_code.should eql( '31234-7890' )
+      it "should agree that the zip_code is 33333-1111" do
+        @user.address.zip_code.should eql( '33333-1111' )
       end
 
       it "should agree that the country is U.S.A." do
         @user.address.country.should eql( 'U.S.A.' )
       end
-      
+
       it "should handle a 5 digit zip code" do
         @user = User.new( :name => 'John Smith', :address => @address_attributes.merge( :raw_zip_code => '31234' ) )
         @user.save!
@@ -95,14 +109,14 @@ describe "AddressableRecord" do
       end
     end
   end
-  
+
   describe "when used through an association" do
     before :each do
       @address_attributes = ADDRESS_ATTRIBUTES
       @person = Person.new( :name => 'John Smith' )
       @person.save!
     end
-    
+
     describe "creating through the association" do
       before :each do
         @address = AddressableRecord::Address.new( @address_attributes )
@@ -134,12 +148,12 @@ describe "AddressableRecord" do
         @person.contact_addresses.first.address.state.should eql( 'GA' )
       end
 
-      it "should agree that the address zip code is 31234-7890" do
-        @address.zip_code.should eql( '31234-7890' )
+      it "should agree that the address zip code is 33333-1111" do
+        @address.zip_code.should eql( '33333-1111' )
       end
 
-      it "should agree that the associated zip code is 31234-7890" do
-        @person.contact_addresses.first.address.zip_code.should eql( '31234-7890' )
+      it "should agree that the associated zip code is 33333-1111" do
+        @person.contact_addresses.first.address.zip_code.should eql( '33333-1111' )
       end
 
       it "should agree that the address country is U.S.A." do
