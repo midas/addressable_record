@@ -1,3 +1,8 @@
+== 1.2.0 2010-09-21
+
+* Make able to parse a string of address elements.
+
+
 == 1.1.0 2010-07-01
 
 * Tweak address formatting to use standard abbreviations and comma placement
