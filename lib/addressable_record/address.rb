@@ -92,6 +92,17 @@ module AddressableRecord
       raw_street.blank? && city.blank? && state_or_province.blank? && raw_zip_code.blank? && country.blank?
     end
 
+    def ==( other )
+      return false unless other.instance_of?( self.class )
+      return false unless other.raw_street.upcase == raw_street.upcase
+      return false unless other.city.upcase == city.upcase
+      return false unless other.state_or_province.upcase  == state_or_province.upcase
+      return false unless other.raw_zip_code == raw_zip_code
+      return false unless other.country.upcase == country.upcase
+
+      true
+    end
+
     # Outputs the parts of teh address delimited by specified delimiter(s).
     #
     # *parameters*
