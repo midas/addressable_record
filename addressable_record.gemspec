@@ -4,21 +4,22 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{addressable_record}
-  s.version = "1.3.0"
+  s.name = "addressable_record"
+  s.version = "1.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["C. Jason Harrelson (midas)"]
-  s.date = %q{2011-11-17}
-  s.description = %q{Encapsulates the composed of pattern for addresses into any easy to use library.  Provides convenience methods for formatting, parsing, etc.}
-  s.email = %q{jason@lookforwardenterprises.com}
+  s.date = "2013-09-20"
+  s.description = "Encapsulates the composed of pattern for addresses into any easy to use library.  Provides convenience methods for formatting, parsing, etc."
+  s.email = "jason@lookforwardenterprises.com"
   s.extra_rdoc_files = [
     "LICENSE",
     "README.rdoc"
   ]
   s.files = [
     ".document",
-    ".rvmrc",
+    ".ruby-gemset",
+    ".ruby-version",
     "History.txt",
     "LICENSE",
     "README.rdoc",
@@ -41,10 +42,10 @@ Gem::Specification.new do |s|
     "spec/spec.opts",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/midas/addressable_record}
+  s.homepage = "http://github.com/midas/addressable_record"
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.0}
-  s.summary = %q{Encapsulates the composed of pattern for addresses into any easy to use library.}
+  s.rubygems_version = "1.8.25"
+  s.summary = "Encapsulates the composed of pattern for addresses into any easy to use library."
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
