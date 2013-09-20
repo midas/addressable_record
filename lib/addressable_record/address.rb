@@ -7,7 +7,7 @@ module AddressableRecord
     NATURAL_STRING_REGEX = /^(.+),\s*(.+),\s*(.+),\s*(.{2})\s*(\d{5})-?(\d{4})?\s*$/
     CSV_STRING_REGEX = /^(.+),\s*(.+),\s*(.+),\s*(.{2}),\s*(\d{5})-?(\d{4})?\s*$/
 
-    attr_reader :raw_street, :streets, :city, :state_or_province, :zip_code, :country
+    attr_reader :raw_street, :streets, :city, :state_or_province, :zip_code, :zip_code_prefix, :zip_code_ext, :country
 
     @@street_delimiter ||= '###'
     @@zip_code_delimiter ||= '-'
@@ -23,6 +23,8 @@ module AddressableRecord
       @streets = AddressableRecord::Address.parse_street( attrs[:raw_street] || '' )
       raw_zip = (attrs[:raw_zip_code] || '')
       @zip_code = raw_zip.size == 5 ? raw_zip : raw_zip.gsub( /(\d{5})(\d{4})/, "\\1#{@@zip_code_delimiter}\\2" )
+      @zip_code_prefix = raw_zip.gsub( /(\d{5})(\d{4}?)/, "\\1" )
+      @zip_code_ext = raw_zip.gsub( /(\d{5})(\d{4}?)/, "\\2" )
 
       @pattern_map = {
               '%s' => @streets.join( ', ' ) || "",
