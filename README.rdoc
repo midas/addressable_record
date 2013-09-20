@@ -102,6 +102,8 @@ Reference the sub parts of the field:
   @user.home_address.state                                  # => GA
   @user.home_address.province                               # => GA
   @user.home_address.zip_code                               # => 33333-1111
+  @user.home_address.zip_code_prefix                        # => 33333
+  @user.home_address.zip_code_ext                           # => 1111
   @user.home_address.country                                # => U.S.A.
 
 Use formats to control the output:
