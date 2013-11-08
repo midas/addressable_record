@@ -76,8 +76,12 @@ Call the macro in an ActiveRecord descendant:
 
 Set the field equal to something:
 
-  @user.home_address = AddressableRecord::Address.new( :raw_street => '123 Jones Street###Suite 540', :city => 'Atlanta',
-                         :state_or_province => 'GA', :raw_zip_code => '333331111', :country => 'U.S.A.' )
+  @user.home_address = AddressableRecord::Address.new( 
+    :raw_street => '123 Jones Street###Suite 540', 
+    :city => 'Atlanta',
+    :state_or_province => 'GA', 
+    :raw_zip_code => '333331111', 
+    :country => 'U.S.A.' )
 
 or (with identical results):
 
