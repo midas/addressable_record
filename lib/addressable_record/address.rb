@@ -129,8 +129,6 @@ module AddressableRecord
       return options[:country] ? to_return + "#{options[:delimiter]}#{self.country}" : to_return
     end
 
-    protected
-
     def raw_street #:nodoc:
       return @streets.nil? ? '' : @streets.join( @@street_delimiter ) #@streets.join( @@street_delimiter )
     end
